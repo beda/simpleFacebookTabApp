@@ -17,5 +17,9 @@
     "jshint": "~0.7.3",
     "nodeunit": "~0.7.4",
     "coffee-script": "~1.3.3"
+  },
+  "subdomain": "simpletab",
+  "engines": {
+    "node": "0.8.x"
   }
 }
