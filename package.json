@@ -1,0 +1,22 @@
+{
+  "name": "SimpleFacebookTabApp",
+  "version": "0.0.0",
+  "description": "Create a simple Facebook Tab Application using node.js",
+  "main": "main.js",
+  "scripts": {
+    "install": "./jake.sh",
+    "test": "./jake.sh test",
+    "start": "node ./main"
+  },
+  "repository": "",
+  "author": "Beda Steinacher",
+  "dependencies": {
+    "coffee-script": "~1.3.3"
+  },
+  "devDependencies": {
+    "jake": "~0.3.10",
+    "jshint": "~0.7.3",
+    "nodeunit": "~0.7.4",
+    "coffee-script": "~1.3.3"
+  }
+}
