@@ -1,0 +1,23 @@
+SimpleFacebookTabApp
+
+Minimum Marketable Features:
+- Static Fangate Page
+- Static Main Page
+
+User Stories:
+- If user doesn't like the Facebook Page the Fangate is shown.
+- If user clicks like the Main Page is revealed.
+
+Engineering Tasks:
+* create Basic Setup from lets_code_javascript
+- explain Facebook Setup in README
+- Setup Server using express
+- detect facebook like with 'faceplate'
+
+To Do on current task:
+-
+
+Future ideas:
+- Get Content from storageroomapp
+
+Notes:
