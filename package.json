@@ -1,13 +1,15 @@
 {
   "name": "SimpleFacebookTabApp",
-  "version": "0.0.0",
+  "engines": {
+    "node": "0.8.x"
+  },
+  "version": "0.0.1-4",
   "description": "Create a simple Facebook Tab Application using node.js",
   "main": "main.js",
   "scripts": {
     "test": "./jake.sh test",
-    "start": "node ./main"
+    "start": "main.js"
   },
-  "repository": "",
   "author": "Beda Steinacher",
   "dependencies": {
     "coffee-script": "~1.3.3"
@@ -18,8 +20,5 @@
     "nodeunit": "~0.7.4",
     "coffee-script": "~1.3.3"
   },
-  "subdomain": "simpletab",
-  "engines": {
-    "node": "0.8.x"
-  }
+  "subdomain": "simpletab"
 }
