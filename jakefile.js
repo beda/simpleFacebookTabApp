@@ -18,7 +18,7 @@
 
 //	desc("Ensure correct version of Node is present");
 	task("node", [], function() {
-		var NODE_VERSION = "v0.8.6";
+		var NODE_VERSION = "v0.8.5";
 
 		sh("node --version", function(stdout) {
 			if (stdout.trim() !== NODE_VERSION) fail("Incorrect node version. Expected " + NODE_VERSION + ".");
