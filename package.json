@@ -4,7 +4,6 @@
   "description": "Create a simple Facebook Tab Application using node.js",
   "main": "main.js",
   "scripts": {
-    "install": "./jake.sh",
     "test": "./jake.sh test",
     "start": "node ./main"
   },
