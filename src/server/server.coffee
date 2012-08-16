@@ -3,7 +3,7 @@ app = express()
 
 # Configuration
 app.configure ->
-  app.set 'views', __dirname + '/views'
+  app.set 'views', __dirname + '/../../views'
   app.set 'view engine', 'jade'
   app.use express.bodyParser()
   app.use express.methodOverride()
@@ -21,7 +21,7 @@ app.configure 'production', ->
 
 #Routes
 app.get '/', (req, res) ->
-  res.send 'Hello World'
+  res.render 'index', {title: 'simple Facebook Tab App'}
 
 app.listen(8080)
 console.log("Express server listening on port 8080 in %s mode", app.settings.env);
