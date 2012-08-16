@@ -12,6 +12,7 @@ if ('development' == app.get('env'))
 if ('production' == app.get('env'))
   app.set 'FB App ID', process.env.FACEBOOK_APP_ID
   app.set 'FB App Secret', process.env.FACEBOOK_SECRET
+  SignedRequest.secret = app.get 'FB App Secret'
   app.use express.errorHandler()
 
 app.configure ->
@@ -34,7 +35,8 @@ app.post '/', (req, res) ->
   if req.body['signed_request']
     signedRequest = new SignedRequest(req.body['signed_request'])
     signedRequest.parse (error, req) ->
-      console.log error, req
+      if error
+        return res.send('error')
       if req.data.page.liked
         res.render 'index',
           title: 'simple Facebook Tab App'
