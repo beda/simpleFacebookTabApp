@@ -2,6 +2,16 @@ express = require('express')
 app = express()
 
 # Configuration
+if ('development' == app.get('env'))
+  app.set 'FB App ID', process.env.LOCAL_FACEBOOK_APP_ID
+  app.set 'FB App Secret', process.env.LOCAL_FACEBOOK_SECRET
+  app.use express.errorHandler({ dumpExceptions: true, showStack: true })
+
+if ('production' == app.get('env'))
+  app.set 'FB App ID', process.env.FACEBOOK_APP_ID
+  app.set 'FB App Secret', process.env.FACEBOOK_SECRET
+  app.use express.errorHandler()
+
 app.configure ->
   app.set 'views', __dirname + '/../../views'
   app.set 'view engine', 'jade'
@@ -12,12 +22,6 @@ app.configure ->
     secret: 'your secret here'
   app.use app.router
   app.use express.static(__dirname + '/public')
-
-app.configure 'development', ->
-  app.use express.errorHandler({ dumpExceptions: true, showStack: true })
-
-app.configure 'production', ->
-  app.use express.errorHandler()
 
 #Routes
 app.get '/', (req, res) ->
