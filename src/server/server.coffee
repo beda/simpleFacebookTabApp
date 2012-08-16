@@ -18,8 +18,10 @@ app.configure ->
   app.use express.bodyParser()
   app.use express.methodOverride()
   app.use express.cookieParser()
-  app.use express.session
-    secret: 'your secret here'
+  app.use require('faceplate').middleware
+    app_id: app.get 'FB App ID'
+    secret: app.get 'FB App Secret'
+    scope:  ''
   app.use app.router
   app.use express.static(__dirname + '/public')
 

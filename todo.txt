@@ -9,9 +9,7 @@ User Stories:
 - If user clicks like the Main Page is revealed.
 
 Engineering Tasks:
-* explain Facebook Setup in README
-- Setup Server using express
-- detect facebook like with 'faceplate'
+* detect facebook like with 'faceplate'
 
 To Do on current task:
 -
