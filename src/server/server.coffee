@@ -34,9 +34,15 @@ app.post '/', (req, res) ->
   if req.body['signed_request']
     signedRequest = new SignedRequest(req.body['signed_request'])
     signedRequest.parse (error, req) ->
-      res.render 'index',
-        title: 'simple Facebook Tab App'
-        appID: app.get('FB App ID')
+      console.log error, req
+      if req.data.page.liked
+        res.render 'index',
+          title: 'simple Facebook Tab App'
+          appID: app.get('FB App ID')
+      else
+        res.render 'index',
+          title: 'Fangate'
+          appID: app.get('FB App ID')
   else
     res.send 'error'
 

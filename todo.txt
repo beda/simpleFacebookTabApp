@@ -5,14 +5,11 @@ Minimum Marketable Features:
 - Static Main Page
 
 User Stories:
-- If user doesn't like the Facebook Page the Fangate is shown.
-- If user clicks like the Main Page is revealed.
 
 Engineering Tasks:
-* detect facebook like with 'facebook-signed-request'
 
 To Do on current task:
--
+
 
 Future ideas:
 - Get Content from storageroomapp
