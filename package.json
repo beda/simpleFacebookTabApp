@@ -12,7 +12,8 @@
   },
   "author": "Beda Steinacher",
   "dependencies": {
-    "coffee-script": "~1.3.3"
+    "coffee-script": "~1.3.3",
+    "express": "3.x"
   },
   "devDependencies": {
     "jake": "~0.3.10",

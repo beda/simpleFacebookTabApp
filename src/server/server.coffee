@@ -1,7 +1,8 @@
-http = require('http')
+express = require('express')
+app = express()
 
-server = http.createServer (req, res) ->
-  res.writeHead 200, {'Content-Type': 'text/plain'}
-  res.end 'hello, i know nodejitsu\n'
+app.get '/', (req, res) ->
+  res.send 'Hello World'
 
-server.listen(8080)
+app.listen(8080)
+console.log('Listening on port 8080');
