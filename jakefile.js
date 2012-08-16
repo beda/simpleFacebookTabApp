@@ -5,15 +5,15 @@
 	"use strict";
 
 	desc("Build and test");
-	task("default", ["test"]);
+	task("default", ["node","test"]);
 
 	desc("Test everything");
-	task("test", ["node"], function() {
+	task("test",[], function() {
 		var reporter = require("nodeunit").reporters["default"];
-		reporter.run(['src/server/_server_test.coffee'], null, function(failures) {
+		reporter.run(['src/routes/_index_test.coffee'], null, function(failures) {
 			if (failures) fail("Tests failed");
 			complete();
-   	});
+   	    });
 	}, {async: true});
 
 //	desc("Ensure correct version of Node is present");
