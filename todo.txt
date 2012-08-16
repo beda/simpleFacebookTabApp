@@ -1,8 +1,8 @@
 SimpleFacebookTabApp
 
 Minimum Marketable Features:
-- Static Fangate Page
-- Static Main Page
++ Static Fangate Page
++ Static Main Page
 
 User Stories:
 
@@ -12,6 +12,7 @@ To Do on current task:
 
 
 Future ideas:
-- Get Content from storageroomapp
+- Get Content from storageroomapp.com
+- user management, contest with kinvey
 
 Notes:
