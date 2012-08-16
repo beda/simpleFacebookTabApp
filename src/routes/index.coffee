@@ -2,34 +2,32 @@ SignedRequest = require 'facebook-signed-request'
 async = require 'async'
 
 routes = (app) ->
-  SignedRequest.secret = app.get 'FB App Secret'
 
-  # check if signed request ist present and determine page like
-  CheckIfUserLikesPage = (req, callback) ->
-    if req.body['signed_request']
-      signedRequest = new SignedRequest(req.body['signed_request'])
-      signedRequest.parse (errors, req) ->
-        if errors.length
-          callback errors
-        if req.data.page.liked
-          callback null, true
-        else
-          callback null, false
-    else
-      callback(new Error('no signed request in post'));
+  # determine page like
+  userLikesPage = (req, cb) ->
+    SignedRequest.secret = app.get 'FB App Secret'
+    signedRequest = new SignedRequest(req.body['signed_request'])
+    signedRequest.parse (errors, req) ->
+      cb(errors) if errors.length
+      if req.data.page.liked
+        cb(null, true)
+      else
+        cb(null, false)
 
   # handler for POST / route
   handleFBPost = (req, res) ->
-    tasks = [async.apply(CheckIfUserLikesPage, req)]
+    if !req.body['signed_request']
+      throw new Error('no signed request in post')
+
+    tasks = {userLikesPage: async.apply(userLikesPage, req)}
 
     async.series tasks, (err,results) ->
       if err
-        console.log err
-        return res.send('error')
+        console.error(err.stack);
+        res.send(500)
+        return
 
-      userLikesPage = results[0]
-
-      if userLikesPage
+      if results.userLikesPage
         res.render 'index',
           title: 'simple Facebook Tab App'
           appID: app.get('FB App ID')
