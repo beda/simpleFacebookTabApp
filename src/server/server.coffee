@@ -34,8 +34,8 @@ app.get '/', (req, res) ->
 app.post '/', (req, res) ->
   if req.body['signed_request']
     signedRequest = new SignedRequest(req.body['signed_request'])
-    signedRequest.parse (error, req) ->
-      if error
+    signedRequest.parse (errors, req) ->
+      if errors.length
         return res.send('error')
       if req.data.page.liked
         res.render 'index',
