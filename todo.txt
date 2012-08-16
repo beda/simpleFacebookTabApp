@@ -9,7 +9,7 @@ User Stories:
 - If user clicks like the Main Page is revealed.
 
 Engineering Tasks:
-* detect facebook like with 'faceplate'
+* detect facebook like with 'facebook-signed-request'
 
 To Do on current task:
 -
