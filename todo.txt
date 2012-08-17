@@ -4,10 +4,13 @@ Minimum Marketable Features:
 + Static Fangate Page
 + Static Main Page
 
+
 User Stories:
+- If user doesn't like the Facebook Page the Fangate is shown.
+- If user clicks like the Main Page is revealed.
+- If user hasn't authorized app a link is shown to initiate authentication flow
 
 Engineering Tasks:
-* use async for flow control
 
 To Do on current task:
 

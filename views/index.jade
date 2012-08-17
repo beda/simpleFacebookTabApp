@@ -5,3 +5,6 @@ block head
 block content
   h1= title
   p Hello World
+
+  if !userAuthorizedApp
+    a(href=oAuthDialogURL, target="_top")   Authenticate Me!
