@@ -16,7 +16,7 @@ To Do on current task:
 
 
 Future ideas:
-- Get Content from storageroomapp.com
+- Get Content from storageroomapp.com or webpop.com
 - user management, contest with kinvey
 
 Notes:
