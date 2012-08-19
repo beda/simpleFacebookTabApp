@@ -14,14 +14,16 @@ routes = (app) ->
     if !req.body['signed_request']
       throw new Error('no signed request in post')
 
-    tasks = [
-      async.apply(parseSignedRequest, app, req)
-      userLikesPage
-      userAuthorizedApp
-    ]
+    tasks =
+      parseSignedRequest: async.apply(parseSignedRequest, app, req)
+      #userLikesPage: userLikesPage
+      #userAuthorizedApp: userAuthorizedApp
 
-    async.waterfall tasks, (err, userAuthorizedApp, userLikesPage, dataOfSignedRequest ) ->
+    async.auto tasks, (err, result ) ->
+      console.log err, result
       #console.log 'userLike', userLikesPage, 'userAuth', userAuthorizedApp , 'data', dataOfSignedRequest
+
+      ###
       if err
         console.error(err.stack);
         res.send(500)
@@ -30,31 +32,8 @@ routes = (app) ->
       oAuthDialogURL = createOAuthDialogURL(app, dataOfSignedRequest, 'email')
 
       if userAuthorizedApp
-        ###
-        vuser = Kinvey.getCurrentUser()
-        console.log 'current', vuser
-
-        user = new Kinvey.User()
-        user.login(
-          dataOfSignedRequest.user_id,null,
-          { success: (user)->
-              console.log user ,
-            error: (error)->
-              console.log error
-          }) ###
-
         getKinveyUser dataOfSignedRequest, (error, user)->
           console.log error, user
-
-        ###
-        Kinvey.User.create(
-          {username:  "1344690254"},
-          { success: (user)->
-                console.log user ,
-              error: (error)->
-                console.log error
-          })
-        ###
 
       if userLikesPage
         res.render 'index',
@@ -68,6 +47,7 @@ routes = (app) ->
           appID: app.get('FB App ID')
           userAuthorizedApp: userAuthorizedApp
           oAuthDialogURL: oAuthDialogURL
+      ###
 
   # POST / route
   app.post '/', handleFacebookPOST
