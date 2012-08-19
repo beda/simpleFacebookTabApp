@@ -1,5 +1,11 @@
 SignedRequest = require 'facebook-signed-request'
 async = require 'async'
+Kinvey = require 'kinvey'
+
+Kinvey.init
+  appKey: process.env.KINVEY_APP_KEY
+  #appSecret: process.env.KINVEY_APPSECRET
+  masterSecret: process.env.KINVEY_MASTERSECRET
 
 routes = (app) ->
 
@@ -15,13 +21,40 @@ routes = (app) ->
     ]
 
     async.waterfall tasks, (err, userAuthorizedApp, userLikesPage, dataOfSignedRequest ) ->
-      console.log 'userLike', userLikesPage, 'userAuth', userAuthorizedApp , 'data', dataOfSignedRequest
+      #console.log 'userLike', userLikesPage, 'userAuth', userAuthorizedApp , 'data', dataOfSignedRequest
       if err
         console.error(err.stack);
         res.send(500)
         return
 
       oAuthDialogURL = createOAuthDialogURL(app, dataOfSignedRequest, 'email')
+
+      if userAuthorizedApp
+        ###
+        vuser = Kinvey.getCurrentUser()
+        console.log 'current', vuser
+
+        user = new Kinvey.User()
+        user.login(
+          dataOfSignedRequest.user_id,null,
+          { success: (user)->
+              console.log user ,
+            error: (error)->
+              console.log error
+          }) ###
+
+        getKinveyUser dataOfSignedRequest, (error, user)->
+          console.log error, user
+
+        ###
+        Kinvey.User.create(
+          {username:  "1344690254"},
+          { success: (user)->
+                console.log user ,
+              error: (error)->
+                console.log error
+          })
+        ###
 
       if userLikesPage
         res.render 'index',
@@ -75,3 +108,13 @@ createOAuthDialogURL = (app, dataOfSignedRequest, scope) ->
     ?client_id=#{appID}
     &redirect_uri=https%3A%2F%2Fwww.facebook.com%2Fpages%2Fnull%2F#{pageID}%3Fsk%3Dapp_#{appID}
     &scope=#{scope}"
+
+getKinveyUser = (dataOfSignedRequest, cb) ->
+  query = new Kinvey.Query()
+  query.on('username').equal dataOfSignedRequest.user_id
+  userCollection = new Kinvey.UserCollection({ query: query })
+  userCollection.fetch
+    success: (user) ->
+      cb null, user,
+    error: (error)->
+      cb error

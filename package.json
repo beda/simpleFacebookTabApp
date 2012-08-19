@@ -16,7 +16,8 @@
     "express": "3.x",
     "jade": "~0.27.2",
     "facebook-signed-request": "0.0.2",
-    "async": "~0.1.22"
+    "async": "~0.1.22",
+    "kinvey": "~0.9.8"
   },
   "devDependencies": {
     "jake": "~0.3.10",
