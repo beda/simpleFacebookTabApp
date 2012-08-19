@@ -4,8 +4,8 @@ Kinvey = require 'kinvey'
 
 Kinvey.init
   appKey: process.env.KINVEY_APP_KEY
-  #appSecret: process.env.KINVEY_APPSECRET
-  masterSecret: process.env.KINVEY_MASTERSECRET
+  appSecret: process.env.KINVEY_APPSECRET
+  #masterSecret: process.env.KINVEY_MASTERSECRET
 
 routes = (app) ->
 
@@ -16,38 +16,32 @@ routes = (app) ->
 
     tasks =
       parseSignedRequest: async.apply(parseSignedRequest, app, req)
-      #userLikesPage: userLikesPage
-      #userAuthorizedApp: userAuthorizedApp
+      userLikesPage: ['parseSignedRequest', userLikesPage]
+      userAuthorizedApp: ['parseSignedRequest', userAuthorizedApp]
+      getKinveyUser: ['parseSignedRequest', getKinveyUser]
 
-    async.auto tasks, (err, result ) ->
-      console.log err, result
-      #console.log 'userLike', userLikesPage, 'userAuth', userAuthorizedApp , 'data', dataOfSignedRequest
-
-      ###
+    async.auto tasks, (err, results ) ->
       if err
-        console.error(err.stack);
+        console.error(err);
         res.send(500)
         return
 
-      oAuthDialogURL = createOAuthDialogURL(app, dataOfSignedRequest, 'email')
+      console.log results
 
-      if userAuthorizedApp
-        getKinveyUser dataOfSignedRequest, (error, user)->
-          console.log error, user
+      oAuthDialogURL = createOAuthDialogURL(app, results.parseSignedRequest, 'email')
 
       if userLikesPage
         res.render 'index',
           title: 'simple Facebook Tab App'
           appID: app.get('FB App ID')
-          userAuthorizedApp: userAuthorizedApp
+          userAuthorizedApp: results.userAuthorizedApp
           oAuthDialogURL: oAuthDialogURL
       else
         res.render 'index',
           title: 'Fangate'
           appID: app.get('FB App ID')
-          userAuthorizedApp: userAuthorizedApp
+          userAuthorizedApp: results.userAuthorizedApp
           oAuthDialogURL: oAuthDialogURL
-      ###
 
   # POST / route
   app.post '/', handleFacebookPOST
@@ -67,19 +61,20 @@ parseSignedRequest = (app, request, cb) ->
     return cb(errors) if errors.length
     cb null, req.data
 
-# determine page like
-userLikesPage = (dataOfSignedRequest, cb) ->
-  callback new Error('no page object in signed request') unless dataOfSignedRequest.page
-  if dataOfSignedRequest.page.liked
-    cb null, true, dataOfSignedRequest
+userLikesPage = (cb, results) ->
+  signedRequest =  results.parseSignedRequest
+  cb new Error('no page object in signed request') unless signedRequest
+  if signedRequest.page.liked
+    cb null, true
   else
-    cb null, false, dataOfSignedRequest
+    cb null, false
 
-userAuthorizedApp = (pageLike, dataOfSignedRequest, cb) ->
-  if dataOfSignedRequest.user_id
-    cb(null, true, pageLike, dataOfSignedRequest)
+userAuthorizedApp = (cb, results) ->
+  signedRequest =  results.parseSignedRequest
+  if signedRequest.user_id
+    cb null, true
   else
-    cb(null, false, pageLike, dataOfSignedRequest)
+    cb null, false
 
 createOAuthDialogURL = (app, dataOfSignedRequest, scope) ->
   appID = app.get 'FB App ID'
@@ -89,12 +84,31 @@ createOAuthDialogURL = (app, dataOfSignedRequest, scope) ->
     &redirect_uri=https%3A%2F%2Fwww.facebook.com%2Fpages%2Fnull%2F#{pageID}%3Fsk%3Dapp_#{appID}
     &scope=#{scope}"
 
-getKinveyUser = (dataOfSignedRequest, cb) ->
-  query = new Kinvey.Query()
-  query.on('username').equal dataOfSignedRequest.user_id
-  userCollection = new Kinvey.UserCollection({ query: query })
-  userCollection.fetch
-    success: (user) ->
-      cb null, user,
-    error: (error)->
-      cb error
+getKinveyUser = (cb, results) ->
+  signedRequest =  results.parseSignedRequest
+  if results.userAuthorizedApp
+    query = new Kinvey.Query()
+    query.on('username').equal signedRequest.user_id
+    userCollection = new Kinvey.UserCollection({ query: query })
+
+    userCollection.fetch(
+      success: (list) ->
+        if list.length
+          user = list[0].attr
+          cb null, user
+        else
+          Kinvey.User.create(
+            {username: signedRequest.user_id},
+            { success: (user)->
+                console.log user
+                cb null, user ,
+              error: (error)->
+                console.log 'create Error'
+                cb error
+            })
+      error: (error)->
+        console.log 'Collection fetch Error'
+        cb error
+    )
+  else
+    cb null, null
