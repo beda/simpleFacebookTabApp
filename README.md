@@ -49,3 +49,17 @@ Create a simple Facebook Tab Application using node.js
 
 ### Deploy app to nodejitsu
     jitsu deploy
+
+## User Management with Kinvey http://www.kinvey.com/
+
+### Create an account and add an app
+
+### Add the keys to your .env file:
+    KINVEY_APP_KEY=yourAppKey
+    KINVEY_APPSECRET=yourAppSecret
+    KINVEY_MASTERSECRET=yourMastersecret
+
+### Set environment variables for nodejitsu
+    jitsu env set KINVEY_APP_KEY yourAppKey
+    jitsu env set KINVEY_APPSECRET yourAppSecret
+    jitsu env set MASTERSECRET yourMastersecret

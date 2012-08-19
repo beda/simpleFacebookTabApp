@@ -17,7 +17,7 @@ routes = (app) ->
       parseSignedRequest: async.apply(parseSignedRequest, app, req)
       userLikesPage: ['parseSignedRequest', userLikesPage]
       userAuthorizedApp: ['parseSignedRequest', userAuthorizedApp]
-      getKinveyUser: ['parseSignedRequest', getKinveyUser]
+      getKinveyUser: ['parseSignedRequest','userAuthorizedApp', getKinveyUser]
 
     async.auto tasks, (err, results ) ->
       if err
@@ -29,7 +29,7 @@ routes = (app) ->
 
       oAuthDialogURL = createOAuthDialogURL(app, results.parseSignedRequest, 'email')
 
-      if userLikesPage
+      if results.userLikesPage
         res.render 'index',
           title: 'simple Facebook Tab App'
           appID: app.get('FB App ID')
