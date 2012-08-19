@@ -87,6 +87,17 @@ createOAuthDialogURL = (app, dataOfSignedRequest, scope) ->
 getKinveyUser = (cb, results) ->
   signedRequest =  results.parseSignedRequest
   if results.userAuthorizedApp
+    entity = new Kinvey.Entity({}, 'user')
+    entity.load('id',
+      success: function(user) {
+        console.log user
+      },
+      error: function(error) {
+        console.log error
+    })
+
+
+
     query = new Kinvey.Query()
     query.on('username').equal signedRequest.user_id
     userCollection = new Kinvey.UserCollection({ query: query })
