@@ -4,8 +4,7 @@ Kinvey = require 'kinvey'
 
 Kinvey.init
   appKey: process.env.KINVEY_APP_KEY
-  appSecret: process.env.KINVEY_APPSECRET
-  #masterSecret: process.env.KINVEY_MASTERSECRET
+  masterSecret: process.env.KINVEY_MASTERSECRET
 
 routes = (app) ->
 
@@ -87,17 +86,10 @@ createOAuthDialogURL = (app, dataOfSignedRequest, scope) ->
 getKinveyUser = (cb, results) ->
   signedRequest =  results.parseSignedRequest
   if results.userAuthorizedApp
-    entity = new Kinvey.Entity({}, 'user')
-    entity.load('id',
-      success: function(user) {
-        console.log user
-      },
-      error: function(error) {
-        console.log error
-    })
 
-
-
+    Kinvey.init
+      appKey: process.env.KINVEY_APP_KEY
+      masterSecret: process.env.KINVEY_MASTERSECRET
     query = new Kinvey.Query()
     query.on('username').equal signedRequest.user_id
     userCollection = new Kinvey.UserCollection({ query: query })
@@ -108,6 +100,9 @@ getKinveyUser = (cb, results) ->
           user = list[0].attr
           cb null, user
         else
+          Kinvey.init
+            appKey: process.env.KINVEY_APP_KEY
+            appSecret: process.env.KINVEY_APPSECRET
           Kinvey.User.create(
             {username: signedRequest.user_id},
             { success: (user)->
@@ -119,7 +114,9 @@ getKinveyUser = (cb, results) ->
             })
       error: (error)->
         console.log 'Collection fetch Error'
+
         cb error
     )
+
   else
     cb null, null
