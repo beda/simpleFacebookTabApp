@@ -63,3 +63,11 @@ Create a simple Facebook Tab Application using node.js
     jitsu env set KINVEY_APP_KEY yourAppKey
     jitsu env set KINVEY_APPSECRET yourAppSecret
     jitsu env set MASTERSECRET yourMastersecret
+
+## Prototyping with Foundation 3 http://foundation.zurb.com/
+
+### Install necessary gems for Foundation 3
+    gem install zurb-foundation
+
+### To compile the stylesheet once
+    compass compile zurb
