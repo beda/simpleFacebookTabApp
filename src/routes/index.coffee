@@ -59,6 +59,8 @@ routes = (app) ->
     res.render 'index',
       title: 'simple Facebook Tab App'
       appID: app.get('FB App ID')
+      userAuthorizedApp: false
+      oAuthDialogURL: ""
 
 module.exports = routes
 

@@ -20,7 +20,7 @@ app.configure ->
   app.use express.methodOverride()
   app.use express.cookieParser()
   app.use app.router
-  app.use express.static(__dirname + '/public')
+  app.use express.static(__dirname + '/../../public')
 
 #Routes
 require('../routes')(app)

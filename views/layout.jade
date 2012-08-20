@@ -2,9 +2,11 @@ doctype 5
 html
   head
     title= title
+    link(rel="stylesheet",href="stylesheets/app.css")
+    script(src="js/foundation/modernizr.foundation.js")
     block head
   body
-    <div id="fb-root"></div>
+    div(id="fb-root")
     script
       window.fbAsyncInit = function() {
         FB.init({
@@ -15,8 +17,6 @@ html
           xfbml      : true  // parse XFBML
         });
       };
-
-      // Load the SDK Asynchronously
       (function(d){
          var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
          if (d.getElementById(id)) {return;}
@@ -27,3 +27,31 @@ html
 
     #content
       block content
+
+    script(src="js/foundation/jquery.js")
+
+    script(src="js/foundation/jquery.foundation.accordion.js")
+
+    script(src="js/foundation/jquery.foundation.alerts.js")
+
+    script(src="js/foundation/jquery.foundation.buttons.js")
+
+    script(src="js/foundation/jquery.foundation.forms.js")
+
+    script(src="js/foundation/jquery.foundation.mediaQueryToggle.js")
+
+    script(src="js/foundation/jquery.foundation.navigation.js")
+
+    script(src="js/foundation/jquery.foundation.orbit.js")
+
+    script(src="js/foundation/jquery.foundation.reveal.js")
+
+    script(src="js/foundation/jquery.foundation.tabs.js")
+
+    script(src="js/foundation/jquery.foundation.tooltips.js")
+
+    script(src="js/foundation/jquery.placeholder.js")
+
+
+
+    script(src="js/foundation/app.js")
