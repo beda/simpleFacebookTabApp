@@ -40,7 +40,7 @@ routes = (app) ->
       # Render view depending on the user liking the page or not
       if results.userLikesPage
         res.render 'index',
-          title: 'simple Facebook Tab App'
+          title: 'Simple Facebook Tab App'
           appID: app.get('FB App ID')
           userAuthorizedApp: results.userAuthorizedApp
           oAuthDialogURL: oAuthDialogURL
