@@ -102,41 +102,16 @@ createOAuthDialogURL = (app, dataOfSignedRequest, scope) ->
 getKinveyUser = (cb, results) ->
   signedRequest =  results.parseSignedRequest
   if results.userAuthorizedApp
-    # Currently the MasterSecret is needed to fetch the UserCollection
-    # TODO: Remove once the kinvey node module is updated
-    Kinvey.init
-      appKey: process.env.KINVEY_APP_KEY
-      masterSecret: process.env.KINVEY_MASTERSECRET
-
     # Fetch current user or create new user
-    query = new Kinvey.Query()
-    query.on('username').equal signedRequest.user_id
-    userCollection = new Kinvey.UserCollection({ query: query })
-    userCollection.fetch(
-      success: (list) ->
-        if list.length
-          # Add user to the results array
-          user = list[0].attr
-          cb null, user
-        else
-          # Currently the AppSecret is needed to create a new User
-          # TODO: Remove once the kinvey node module is updated
-          Kinvey.init
-            appKey: process.env.KINVEY_APP_KEY
-            appSecret: process.env.KINVEY_APPSECRET
-          Kinvey.User.create(
-            {username: signedRequest.user_id},
-            { success: (user)->
-                console.log user
-                cb null, user ,
-              error: (error)->
-                console.log 'create Error'
-                cb error
-            })
+    currentFacebookUser = new Kinvey.User();
+    token = signedRequest.oauth_token;
+    attr = {}
+    currentFacebookUser.loginWithFacebook(token, attr,
+      success: (user, info) ->
+        cb null, user
       error: (error)->
-        console.log 'Collection fetch Error'
+        console.log 'error loginWithFacebook', error, info
         cb error
     )
-
   else
     cb null, null
