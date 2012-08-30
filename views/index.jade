@@ -4,11 +4,8 @@ block head
 
 block content
   header
-    h1= title
+    h1 Welcome to our Facebook Application
 
   section
     article
-      p Hello World
-
-      if !userAuthorizedApp
-        a(href=oAuthDialogURL, target="_top", class="radius button")   Authenticate Me!
+      p Hello #{kinveyUser.facebook.first_name}

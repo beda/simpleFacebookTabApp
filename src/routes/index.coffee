@@ -35,21 +35,21 @@ routes = (app) ->
       #  getKinveyUser: user object from kinvey | null
       console.log results
 
-      oAuthDialogURL = createOAuthDialogURL(app, results.parseSignedRequest, 'email')
-
       # Render view depending on the user liking the page or not
-      if results.userLikesPage
-        res.render 'index',
+      if results.userLikesPage && !results.userAuthorizedApp
+        oAuthDialogURL = createOAuthDialogURL(app, results.parseSignedRequest, 'email')
+        res.render 'authorization',
           title: 'Simple Facebook Tab App'
           appID: app.get('FB App ID')
           userAuthorizedApp: results.userAuthorizedApp
           oAuthDialogURL: oAuthDialogURL
-      else
+      else if results.userLikesPage && results.userAuthorizedApp
         res.render 'index',
-          title: 'Fangate'
           appID: app.get('FB App ID')
-          userAuthorizedApp: results.userAuthorizedApp
-          oAuthDialogURL: oAuthDialogURL
+          kinveyUser: results.getKinveyUser.attr._socialIdentity
+      else
+        res.render 'fangate',
+          appID: app.get('FB App ID')
 
   # POST / route
   app.post '/', handleFacebookPOST
