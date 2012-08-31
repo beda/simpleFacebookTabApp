@@ -46,7 +46,7 @@ routes = (app) ->
       else if results.userLikesPage && results.userAuthorizedApp
         res.render 'index',
           appID: app.get('FB App ID')
-          kinveyUser: results.getKinveyUser.attr._socialIdentity
+          kinveyUser: results.getKinveyUser.attr
       else
         res.render 'fangate',
           appID: app.get('FB App ID')
@@ -102,8 +102,10 @@ getKinveyUser = (cb, results) ->
     # Fetch current user or create new user
     currentFacebookUser = new Kinvey.User();
     token = signedRequest.oauth_token;
-    attr = {}
-    currentFacebookUser.loginWithFacebook(token, attr,
+    userAttributes =
+      name: 'userName'
+      image: 'userImage'
+    currentFacebookUser.loginWithFacebook(token, userAttributes,
       success: (user, info) ->
         cb null, user
       error: (error)->
