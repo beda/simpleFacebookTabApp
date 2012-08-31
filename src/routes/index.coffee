@@ -56,11 +56,8 @@ routes = (app) ->
 
   # GET / route TODO: remove this route; it is just for convenience, not needed for final app
   app.get '/', (req, res) ->
-    res.render 'index',
-      title: 'simple Facebook Tab App'
+    res.render 'fangate',
       appID: app.get('FB App ID')
-      userAuthorizedApp: false
-      oAuthDialogURL: ""
 
 module.exports = routes
 
